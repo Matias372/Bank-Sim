@@ -3,14 +3,70 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Cajero Automático Simulado</title>
+        <title>Simulador de Cajero Automático</title>
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        />
     </head>
     <body>
-        <h1>Cajero Automático</h1>
-        <div id="log">
-            <!-- Aquí se irán mostrando las interacciones del cajero -->
-        </div>
+        <header class="header">
+            <div class="container">
+                <h1 class="header__title">Simulador de Cajero Automático</h1>
+                <nav class="header__nav">
+                    <button id="nuevo" class="btn btn-primary">
+                        Nuevo Juego
+                    </button>
+                    <button id="cargar" class="btn btn-secondary">
+                        Cargar Partida
+                    </button>
+                </nav>
+            </div>
+        </header>
 
-        <script src="../../Control/cajero.js"></script>
+        <main class="main" style="display: none">
+            <section class="client-data">
+                <div class="container">
+                    <h2 class="client-data__title">Datos del Cliente</h2>
+                    <div class="client-data__info">
+                        <p id="nombre-cliente" class="client-data__item">
+                            Nombre:
+                        </p>
+                        <p id="genero-cliente" class="client-data__item">
+                            Género:
+                        </p>
+                        <p id="edad-cliente" class="client-data__item">Edad:</p>
+                        <p id="dni-cliente" class="client-data__item">DNI:</p>
+                        <p id="peticion-cliente" class="client-data__item">
+                            Petición:
+                        </p>
+                        <p id="resultado-peticion" class="client-data__item">
+                            Resultado:
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bank-interface">
+                <div class="container">
+                    <h2 class="bank-interface__title">Interfaz del Banco</h2>
+                    <div class="bank-interface__options"></div>
+                    <div
+                        id="entrada-dinero"
+                        class="bank-interface__input"
+                        style="display: none"
+                    ></div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer" style="display: none">
+            <div class="container">
+                <p id="calidad" class="footer__quality">Calidad:</p>
+                <p id="dia" class="footer__day">Día:</p>
+            </div>
+        </footer>
+
+        <script type="module" src="../../Control/main.js"></script>
     </body>
 </html>

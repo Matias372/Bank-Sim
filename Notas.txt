@@ -1,0 +1,72 @@
+El proyecto es un simulador de atención bancaria, donde el usuario asume el rol de un 
+empleado que debe procesar las solicitudes de clientes generados aleatoriamente. 
+Estos clientes pueden realizar diversas solicitudes como crear cuentas, ingresar o 
+retirar efectivo, transferir dinero, o incluso cerrar cuentas. Algunas solicitudes 
+requieren la verificación de datos bancarios. A medida que avanzan los días, el número 
+de clientes crece, y el desempeño del usuario afecta la calidad de su trabajo. Si la 
+calidad baja a 0, el juego termina (el usuario es despedido).
+
+Puntos clave del proyecto:
+
+Generación diaria de clientes:
+
+Cada día se generan clientes con datos aleatorios (nombre, género, edad, DNI).
+Se verifica si la solicitud del cliente requiere acceso al banco (reqbank = true). 
+Si es así, se copian los datos del cliente al registro del banco.
+
+Clientes sospechosos (SUS):
+
+Existe una baja probabilidad (10%) de que un cliente sea sospechoso (SUS = true), en 
+cuyo caso uno de sus datos se modifica levemente (por ejemplo, cambiar una letra en 
+el nombre o variar su edad).
+Si un cliente es identificado como sospechoso, el usuario debe rechazar la solicitud 
+e indicar el motivo.
+
+Registro bancario:
+
+Los clientes que necesitan operaciones bancarias (como retiros o ingresos) se 
+registran en el banco con datos como su saldo.
+En el caso de solicitudes de extracción de efectivo, se genera un saldo inicial 
+con un margen de ±10% respecto al monto solicitado, lo que puede provocar situaciones 
+de saldo insuficiente.
+
+Procesamiento de solicitudes:
+
+Cada cliente genera una petición, y el usuario debe interactuar con el sistema para 
+aceptarla o rechazarla según corresponda.
+Si el usuario comete un error (no detecta un cliente sospechoso, procesa mal una 
+solicitud, etc.), la variable de calidad disminuye.
+
+Sistema de días y calidad:
+
+Al finalizar cada día, se guarda la partida con los datos del día y la calidad 
+del trabajo.
+El número de clientes aumenta cada día, lo que incrementa la dificultad.
+La calidad es una variable que comienza en 5 y puede subir o bajar de acuerdo al 
+desempeño del usuario. Si llega a 0, el juego termina (fin del juego, despedido).
+Si el usuario completa un día sin errores, la calidad sube +1; si comete errores, 
+baja -1.
+
+Guardado y continuación:
+
+Al final de cada día, los datos del progreso se guardan en una carpeta llamada 
+"saves" para que el usuario pueda continuar en otro momento.
+
+Puntos a tener en cuenta:
+Balance entre dificultad y progreso: A medida que avanzan los días, el número de 
+clientes aumenta, lo que incrementa la carga de trabajo y la probabilidad de errores. 
+Ajustar la dificultad para mantener el juego entretenido es crucial.
+
+Manejo de datos modificados (SUS): Asegurarse de que los datos modificados de 
+los clientes sean detectables, pero no tan obvios que el usuario siempre los note. 
+Esto añade un desafío.
+
+Interacción del usuario: La interfaz debe mostrar claramente los datos de los 
+clientes y las opciones que el usuario tiene para aceptar o rechazar solicitudes.
+
+Sistema de calidad: Debe ser justo, es decir, si el usuario detecta y maneja 
+correctamente los clientes sospechosos, la calidad debe aumentar, lo que le permite 
+continuar jugando.
+
+Guardar y cargar el progreso: Implementar un sistema de guardado para que el usuario 
+pueda detenerse y continuar el juego más tarde.
