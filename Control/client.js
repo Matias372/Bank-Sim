@@ -63,22 +63,33 @@ class Cliente {
     }
 
     // Función para generar un cliente aleatorio
+    // Función para generar un cliente aleatorio
+    // Función para generar un cliente aleatorio
     static generarCliente() {
         // Seleccionar género y nombre aleatorio
         const generos = ["masculino", "femenino"];
         const genero = generos[Math.floor(Math.random() * generos.length)];
-        const nombre =
-            genero === "masculino"
-                ? gameData.nombres.masculino[
-                      Math.floor(
-                          Math.random() * gameData.nombres.masculino.length
-                      )
-                  ]
-                : gameData.nombres.femeninos[
-                      Math.floor(
-                          Math.random() * gameData.nombres.femenino.length
-                      )
-                  ];
+
+        let nombre;
+        if (genero === "masculino") {
+            nombre =
+                gameData.nombres.masculino[
+                    Math.floor(
+                        Math.random() * gameData.nombres.masculino.length
+                    )
+                ];
+        } else {
+            nombre =
+                gameData.nombres.femenino[
+                    Math.floor(Math.random() * gameData.nombres.femenino.length) // CORRECCIÓN AQUÍ
+                ];
+        }
+
+        // Asegúrate de que el nombre se haya generado correctamente
+        if (!nombre) {
+            console.error("Error al generar nombre para el cliente.");
+            return null; // Evitar continuar si no hay nombre
+        }
 
         const edad = Math.floor(Math.random() * 50) + 18; // Edad entre 18 y 67 años
         const dni = Math.random().toString().slice(2, 10); // Genera un DNI completamente aleatorio
@@ -103,13 +114,26 @@ class Cliente {
             textosRelacionados[
                 Math.floor(Math.random() * textosRelacionados.length)
             ];
-        textoSeleccionado = textoSeleccionado.replace(/{nombre}/g, nombre); // Reemplazar {nombre} en el texto
+
+        // Reemplazar {nombre} y ${cliente.value} en el texto
+        if (!textoSeleccionado) {
+            console.error(
+                "Error al seleccionar texto relacionado con la petición."
+            );
+            return null; // Evitar continuar si no hay texto
+        }
 
         // Generar valor si la petición requiere efectivo
         let value = 0;
         if (peticion.reqbank) {
             value = Math.floor(Math.random() * 10 + 1) * 500; // Valor entre 500 y 5000
+            textoSeleccionado = textoSeleccionado.replace(
+                /\${cliente.value}/g,
+                `$${value}` // Reemplazar ${cliente.value} con el valor precedido por '$'
+            );
         }
+
+        textoSeleccionado = textoSeleccionado.replace(/{nombre}/g, nombre); // Reemplazar {nombre} en el texto
 
         // Crear cliente con datos generados
         return new Cliente(

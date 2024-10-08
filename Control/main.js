@@ -3,12 +3,7 @@
 // ===============================================
 import { generarClientesPorDia } from "./workDayHandler.js";
 import { Banco } from "./bank.js";
-import {
-    showsimulador,
-    hideSimulador,
-    updateClientData,
-    updateResult,
-} from "./interfaz.js";
+import { showsimulador, hideSimulador, updateClientData } from "./interfaz.js";
 
 // ===============================================
 // 2) VARIABLES
@@ -34,7 +29,17 @@ function nuevoJuego() {
 
     showsimulador();
     clientsPerDay = actualizarClientsPerDay();
+    console.log(`Clientes por día actualizados a: ${clientsPerDay}`);
+
+    // Intentar generar los clientes
     clientes = generarClientesPorDia(clientsPerDay);
+    console.log(`Clientes generados: ${JSON.stringify(clientes)}`);
+
+    if (clientes.length > 0) {
+        updateClientData(clientes[0]);
+    } else {
+        console.error("No se han generado clientes.");
+    }
 }
 
 // Cargar el nuevo juego
@@ -55,6 +60,7 @@ cargarPartidaBtn.addEventListener("click", cargarPartida);
 // ===============================================
 function actualizarClientsPerDay() {
     // Incrementar en función del día actual
-    clientsPerDay = 5 + (currentDay - 1); // Por ejemplo, añade uno más por cada día
+    let clientsPerDay = 5 + (currentDay - 1); // Por ejemplo, añade uno más por cada día
     console.log(`Clientes por día actualizados a: ${clientsPerDay}`);
+    return clientsPerDay; // Asegúrate de devolver el valor
 }

@@ -1,72 +1,120 @@
 El proyecto es un simulador de atención bancaria, donde el usuario asume el rol de un 
 empleado que debe procesar las solicitudes de clientes generados aleatoriamente. 
-Estos clientes pueden realizar diversas solicitudes como crear cuentas, ingresar o 
-retirar efectivo, transferir dinero, o incluso cerrar cuentas. Algunas solicitudes 
-requieren la verificación de datos bancarios. A medida que avanzan los días, el número 
-de clientes crece, y el desempeño del usuario afecta la calidad de su trabajo. Si la 
-calidad baja a 0, el juego termina (el usuario es despedido).
+La idea principal es que los clientes realizan diversas solicitudes bancarias, como 
+abrir cuentas, hacer depósitos, retiros, transferencias o incluso cerrar cuentas. 
+Algunas solicitudes requieren la verificación de datos bancarios, lo que añade una 
+capa de complejidad y realismo al juego.
 
-Puntos clave del proyecto:
+El simulador sigue una estructura de días laborales, y a medida que avanza el tiempo, 
+la cantidad de clientes aumenta, lo que también incrementa la dificultad del juego. 
+El desempeño del usuario afecta la calidad de su trabajo. Si la calidad baja a 0, el 
+juego termina, lo que simula el despido del empleado.
 
-Generación diaria de clientes:
+Puntos clave del proyecto
 
-Cada día se generan clientes con datos aleatorios (nombre, género, edad, DNI).
-Se verifica si la solicitud del cliente requiere acceso al banco (reqbank = true). 
-Si es así, se copian los datos del cliente al registro del banco.
+1. Generación diaria de clientes
+Clientes aleatorios: Cada día, el simulador genera una lista de clientes con 
+información generada aleatoriamente, incluyendo nombre, género, edad y DNI. Estos 
+datos varían en cada nueva partida para aumentar la rejugabilidad.
+Verificación de solicitudes: Cada cliente tiene una solicitud particular que puede 
+o no requerir acceso al banco. Si la solicitud requiere acceso (por ejemplo, retiro 
+de dinero), los datos del cliente se copian al registro bancario.
+Clientes sospechosos (SUS): Existe una probabilidad del 10% de que un cliente sea 
+"sospechoso", lo que implica que uno de sus datos será alterado sutilmente. Por 
+ejemplo, su nombre podría tener una letra cambiada o su edad podría variar levemente. 
+Si el usuario identifica a un cliente sospechoso, debe rechazar la solicitud e indicar
+el motivo.
 
-Clientes sospechosos (SUS):
+2. Registro bancario
+Los clientes que solicitan operaciones que implican dinero, como retiros, ingresos o 
+transferencias, deben estar registrados en el banco con sus datos y su saldo actual.
+Saldo inicial aleatorio: Para los retiros, se genera un saldo inicial con un margen 
+de ±10% respecto al monto solicitado. Esto crea situaciones donde el cliente puede 
+tener saldo insuficiente, lo que añade dificultad al juego.
 
-Existe una baja probabilidad (10%) de que un cliente sea sospechoso (SUS = true), en 
-cuyo caso uno de sus datos se modifica levemente (por ejemplo, cambiar una letra en 
-el nombre o variar su edad).
-Si un cliente es identificado como sospechoso, el usuario debe rechazar la solicitud 
-e indicar el motivo.
+3. Procesamiento de solicitudes
+Cada cliente tiene una petición que el usuario debe procesar. Esto puede ser aceptar,
+ rechazar o revisar más a fondo la solicitud. La precisión con la que el usuario 
+ procesa las solicitudes afecta directamente la "calidad del trabajo", una variable 
+ clave en el simulador.
+Errores y penalizaciones: Si el usuario comete errores (por ejemplo, no identifica un 
+cliente sospechoso o procesa mal una solicitud), la calidad de su trabajo disminuye. 
+Si la calidad llega a 0, el juego termina con el despido del empleado.
 
-Registro bancario:
+4. Sistema de días y calidad
+El juego está estructurado en días laborales. Al final de cada día, se guarda el 
+progreso del usuario, incluyendo los datos de los clientes atendidos y la calidad 
+de su trabajo.
+Incremento de dificultad: A medida que pasan los días, el número de clientes 
+generados aumenta, lo que incrementa la carga de trabajo. Esto hace que sea más 
+difícil para el usuario mantener una alta calidad en su desempeño.
+Calidad del trabajo: El usuario comienza con una calidad de 5. Esta variable puede 
+subir o bajar según el desempeño del usuario. Si el usuario completa un día sin 
+errores, la calidad sube en +1. Si comete errores, baja en -1. Si la calidad baja a 
+0, el juego termina, lo que simula que el usuario ha sido despedido.
 
-Los clientes que necesitan operaciones bancarias (como retiros o ingresos) se 
-registran en el banco con datos como su saldo.
-En el caso de solicitudes de extracción de efectivo, se genera un saldo inicial 
-con un margen de ±10% respecto al monto solicitado, lo que puede provocar situaciones 
-de saldo insuficiente.
+5. Sistema de guardado y continuación
+Al final de cada día, los datos del progreso (clientes atendidos, saldo, calidad del 
+trabajo, etc.) se guardan en una carpeta llamada "saves". Esto permite que el usuario 
+pueda detenerse y continuar la partida en otro momento, manteniendo su progreso.
+Balance de dificultad y progreso: Uno de los retos principales del diseño de este 
+simulador es encontrar el equilibrio entre la dificultad y el progreso. A medida que 
+los días avanzan, la carga de trabajo del usuario se incrementa. Si el juego es 
+demasiado fácil, puede volverse aburrido, pero si es demasiado difícil, puede resultar
+frustrante.
 
-Procesamiento de solicitudes:
+6. Clientes sospechosos (SUS)
+Los datos modificados de los clientes sospechosos deben ser detectables por el 
+usuario, pero no tan evidentes como para que siempre los identifique de inmediato. 
+Esto añade un elemento de desafío, ya que el jugador debe estar atento a pequeños 
+errores en la información presentada.
+La capacidad del usuario para detectar a estos clientes afecta directamente la calidad
+de su trabajo.
 
-Cada cliente genera una petición, y el usuario debe interactuar con el sistema para 
-aceptarla o rechazarla según corresponda.
-Si el usuario comete un error (no detecta un cliente sospechoso, procesa mal una 
-solicitud, etc.), la variable de calidad disminuye.
+7. Interfaz de usuario
+Es crucial que la interfaz del simulador sea clara y sencilla. Debe mostrar de manera 
+accesible los datos de los clientes (nombre, edad, solicitud, saldo, etc.) y las 
+opciones que el usuario tiene para aceptar o rechazar solicitudes.
+La interfaz debe ser lo suficientemente intuitiva para que el usuario pueda tomar 
+decisiones rápidas, especialmente a medida que el número de clientes aumenta y el 
+juego se vuelve más exigente.
 
-Sistema de días y calidad:
+Proceso lógico del desarrollo
 
-Al finalizar cada día, se guarda la partida con los datos del día y la calidad 
-del trabajo.
-El número de clientes aumenta cada día, lo que incrementa la dificultad.
-La calidad es una variable que comienza en 5 y puede subir o bajar de acuerdo al 
-desempeño del usuario. Si llega a 0, el juego termina (fin del juego, despedido).
-Si el usuario completa un día sin errores, la calidad sube +1; si comete errores, 
-baja -1.
+Para estructurar el desarrollo del proyecto, los siguientes pasos son recomendados:
 
-Guardado y continuación:
+Diseño del sistema de generación de clientes:
 
-Al final de cada día, los datos del progreso se guardan en una carpeta llamada 
-"saves" para que el usuario pueda continuar en otro momento.
+Implementar un sistema que permita la creación de clientes aleatorios con los 
+datos necesarios (nombre, género, edad, DNI).
+Añadir la funcionalidad de generación diaria de clientes y determinar qué porcentaje 
+de ellos será sospechoso.
 
-Puntos a tener en cuenta:
-Balance entre dificultad y progreso: A medida que avanzan los días, el número de 
-clientes aumenta, lo que incrementa la carga de trabajo y la probabilidad de errores. 
-Ajustar la dificultad para mantener el juego entretenido es crucial.
+Creación del registro bancario:
 
-Manejo de datos modificados (SUS): Asegurarse de que los datos modificados de 
-los clientes sean detectables, pero no tan obvios que el usuario siempre los note. 
-Esto añade un desafío.
+Diseñar el sistema de registro de clientes en el banco, incluyendo los datos básicos 
+del cliente y su saldo.
+Añadir la lógica para operaciones bancarias como depósitos, retiros y transferencias.
 
-Interacción del usuario: La interfaz debe mostrar claramente los datos de los 
-clientes y las opciones que el usuario tiene para aceptar o rechazar solicitudes.
+Implementación del procesamiento de solicitudes:
 
-Sistema de calidad: Debe ser justo, es decir, si el usuario detecta y maneja 
-correctamente los clientes sospechosos, la calidad debe aumentar, lo que le permite 
-continuar jugando.
+Crear un sistema que permita al usuario aceptar o rechazar solicitudes de clientes.
+Desarrollar la lógica para validar si los clientes sospechosos son identificados 
+correctamente por el usuario y cómo esto afecta la calidad de su trabajo.
 
-Guardar y cargar el progreso: Implementar un sistema de guardado para que el usuario 
-pueda detenerse y continuar el juego más tarde.
+Desarrollo del sistema de días y calidad:
+
+Implementar el sistema de avance de días. Cada día, el número de clientes aumentará y 
+la dificultad se incrementará. Desarrollar la lógica de la variable "calidad", 
+asegurando que suba o baje de manera justa según el desempeño del usuario.
+
+Sistema de guardado y carga:
+
+Implementar un sistema de guardado al final de cada día para que el usuario pueda 
+retomar su partida en cualquier momento.
+Pruebas y ajustes de balance:
+
+Una vez que las funcionalidades básicas estén implementadas, es importante realizar 
+pruebas para asegurarse de que el juego no sea ni demasiado fácil ni frustrantemente 
+difícil. El balance es clave para mantener el interés del usuario a lo largo del 
+tiempo.

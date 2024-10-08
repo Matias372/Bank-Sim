@@ -9,8 +9,8 @@
             href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         />
     </head>
-    <body>
-        <header class="header">
+    <body class="d-flex flex-column col-12">
+        <section class="Menu" style="display: block"></section>
             <div class="container">
                 <h1 class="header__title">Simulador de Cajero Automático</h1>
                 <nav class="header__nav">
@@ -22,7 +22,7 @@
                     </button>
                 </nav>
             </div>
-        </header>
+        </section>
 
         <main class="main" style="display: none">
             <section class="client-data">
@@ -40,31 +40,35 @@
                         <p id="peticion-cliente" class="client-data__item">
                             Petición:
                         </p>
-                        <p id="resultado-peticion" class="client-data__item">
-                            Resultado:
-                        </p>
                     </div>
                 </div>
             </section>
 
-            <section class="bank-interface">
+            <section class="bank-interface" style="display: none">
                 <div class="container">
                     <h2 class="bank-interface__title">Interfaz del Banco</h2>
-                    <div class="bank-interface__options"></div>
-                    <div
-                        id="entrada-dinero"
-                        class="bank-interface__input"
-                        style="display: none"
-                    ></div>
+                    <div class="bank-interface__options">
+                        <p id="option_1">1. Base de datos</p>
+                        <p id="option_2">2. Operacion</p>
+                        <p id="option_3">3. Rechazar petición</p>
+                        <p id="option_4">4. Terminar turno</p>
+                    </div>
+                    <div class="bank-interface__input">
+                        <input
+                            type="text"
+                            id="input"
+                            class="form-control"
+                            placeholder="Place order number"
+                        />
+                        <button id="confirm" class="btn btn-primary">Confirm</button>
+                        <button id="cancel" class="btn btn-secondary">Cancel</button>
+                    </div>
                 </div>
             </section>
         </main>
 
-        <footer class="footer" style="display: none">
-            <div class="container">
-                <p id="calidad" class="footer__quality">Calidad:</p>
-                <p id="dia" class="footer__day">Día:</p>
-            </div>
+        <footer class="footer">
+            
         </footer>
 
         <script type="module" src="../../Control/main.js"></script>
