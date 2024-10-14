@@ -1,0 +1,166 @@
+// Variables para colores y fuentes
+$color-xp-background: #e0e0e0;
+$color-xp-button: #d4d0c8;
+$color-xp-border: #808080;
+$font-xp: "Tahoma", Geneva, sans-serif;
+$color-background: #f4f4f4;
+$color-primary: #1c5d99;
+$color-secondary: #4a90e2;
+$color-border: #dcdcdc;
+$color-text-dark: #333333;
+$color-text-light: #ffffff;
+$color-interface-bg: #ffffff;
+$color-interface-border: #cccccc;
+$font-main: "Roboto", sans-serif;
+$font-interface: "Arial", sans-serif;
+$color-input-bg: #f0f0f0;
+$color-input-border: #cccccc;
+
+// Estilos generales del body
+body {
+    font-family: $font-main;
+    margin: 0;
+    padding: 0;
+    background-color: $color-background;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+// Estilo del menú similar a Windows XP
+.Menu {
+    background-color: $color-xp-background;
+    border: 2px solid $color-xp-border;
+    padding: 20px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+
+    .header__title {
+        font-size: 24px;
+        color: #000080;
+        text-shadow: 1px 1px 2px #ffffff;
+        margin-bottom: 20px;
+    }
+
+    .header__nav {
+        display: flex;
+        gap: 10px;
+
+        button {
+            background-color: $color-xp-button;
+            border: 1px solid $color-xp-border;
+            padding: 10px 20px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.15);
+            font-family: $font-xp;
+            cursor: pointer;
+
+            &:hover {
+                background-color: lighten($color-xp-button, 5%);
+            }
+
+            &.btn-primary {
+                color: $color-text-light;
+                background-color: #008080;
+            }
+
+            &.btn-secondary {
+                background-color: #d0d0d0;
+            }
+        }
+    }
+}
+
+// Estilo principal con datos del cliente
+.main {
+    background-color: $color-interface-bg;
+    color: $color-text-dark;
+    padding: 20px;
+    margin-bottom: 20px;
+
+    .client-data__title {
+        font-size: 22px;
+        font-weight: 600;
+        color: $color-primary;
+        margin-bottom: 15px;
+    }
+
+    .client-data__info {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background-color: $color-background;
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid $color-border;
+
+        p {
+            font-size: 18px;
+            margin: 0;
+            padding: 8px 0;
+            border-bottom: 1px solid $color-border;
+
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+    }
+}
+
+// Estilo para la interfaz del banco
+.bank-interface {
+    background-color: $color-interface-bg;
+    color: $color-text-dark;
+    font-family: $font-interface;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid $color-interface-border;
+
+    .bank-interface__title {
+        font-size: 20px;
+        font-weight: 600;
+        color: $color-primary;
+        margin-bottom: 15px;
+        border-bottom: 2px solid $color-primary;
+    }
+
+    .bank-interface__options {
+        p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+    }
+
+    .bank-interface__input {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        input {
+            background-color: $color-input-bg;
+            border: 1px solid $color-input-border;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: $color-primary;
+            color: $color-text-light;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+
+            &:hover {
+                background-color: $color-secondary;
+            }
+
+            &.btn-secondary {
+                background-color: #6c757d;
+                color: $color-text-light;
+            }
+        }
+    }
+}

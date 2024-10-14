@@ -12,7 +12,8 @@ class Cliente {
         reqbank = false,
         text = "",
         value = 0,
-        sus = false
+        sus = false,
+        dni_dest = null // Añadir dni_dest como parámetro
     ) {
         this.nombre = nombre;
         this.genero = genero;
@@ -23,6 +24,7 @@ class Cliente {
         this.sus = false; // Inicialmente no es sospechoso
         this.text = text; // Texto relacionado con la petición
         this.value = value; // Valor para las transacciones de efectivo
+        this.dni_dest = dni_dest; // Asignar dni_dest
     }
 
     // Método para hacer que un cliente se vuelva sospechoso
@@ -62,8 +64,6 @@ class Cliente {
         }
     }
 
-    // Función para generar un cliente aleatorio
-    // Función para generar un cliente aleatorio
     // Función para generar un cliente aleatorio
     static generarCliente() {
         // Seleccionar género y nombre aleatorio
@@ -125,12 +125,22 @@ class Cliente {
 
         // Generar valor si la petición requiere efectivo
         let value = 0;
+        let dni_dest = null; // Inicializar dni_dest
         if (peticion.reqbank) {
             value = Math.floor(Math.random() * 10 + 1) * 500; // Valor entre 500 y 5000
             textoSeleccionado = textoSeleccionado.replace(
                 /\${cliente.value}/g,
                 `$${value}` // Reemplazar ${cliente.value} con el valor precedido por '$'
             );
+
+            // Generar un DNI destino solo si la petición es "transferir dinero"
+            if (peticion.tipo === "transferir dinero") {
+                dni_dest = Math.random().toString().slice(2, 10); // Genera un DNI aleatorio
+                textoSeleccionado = textoSeleccionado.replace(
+                    /\${cliente.dni_dest}/g,
+                    dni_dest // Reemplazar ${cliente.dni_dest} con el DNI destino
+                );
+            }
         }
 
         textoSeleccionado = textoSeleccionado.replace(/{nombre}/g, nombre); // Reemplazar {nombre} en el texto
@@ -144,7 +154,9 @@ class Cliente {
             peticion.tipo,
             peticion.reqbank,
             textoSeleccionado,
-            value
+            value,
+            false, // Inicializar la propiedad sus
+            dni_dest // Pasar el dni_dest
         );
     }
 }

@@ -78,11 +78,11 @@ const gameData = {
             "El cliente {nombre} está aquí para ingresar ${cliente.value} en su cuenta.",
         ],
         "transferir dinero": [
-            "{nombre} ha solicitado transferir ${cliente.value} a otra cuenta.",
-            "El cliente {nombre} quiere realizar una transferencia de ${cliente.value}.",
-            "Una transferencia de ${cliente.value} ha sido solicitada por {nombre}.",
-            "{nombre} desea enviar ${cliente.value} a otra cuenta.",
-            "El cliente {nombre} quiere transferir ${cliente.value} a otra persona.",
+            "{nombre} ha solicitado transferir ${cliente.value} a la cuenta de ${cliente.dni_dest}.",
+            "El cliente {nombre} quiere realizar una transferencia de ${cliente.value} a ${cliente.dni_dest}.",
+            "Una transferencia de ${cliente.value} ha sido solicitada por {nombre} hacia ${cliente.dni_dest}.",
+            "{nombre} desea enviar ${cliente.value} a la cuenta de ${cliente.dni_dest}.",
+            "El cliente {nombre} quiere transferir ${cliente.value} a ${cliente.dni_dest}.",
         ],
         "activar tarjeta": [
             "{nombre} ha solicitado activar una tarjeta bancaria.",

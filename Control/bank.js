@@ -4,73 +4,103 @@ class Banco {
         this.registroBanco = []; // Array para almacenar el registro bancario
     }
 
-    // Método para crear un registro bancario a partir de un array de clientes
-    generarRegistroBanco(clientes) {
-        // Recorremos cada cliente y guardamos la información en el registro
-        this.registroBanco = clientes.map((cliente) => ({
+    // Método para crear un registro bancario a partir de un cliente
+    generarRegistroBanco(cliente) {
+        const registroCliente = {
             nombre: cliente.nombre,
             genero: cliente.genero,
             edad: cliente.edad,
             dni: cliente.dni,
-        }));
+            value: cliente.value || 0, // Asegura que el cliente tenga un saldo inicial
+            tarjetaActivada: false, // Inicializa el estado de la tarjeta
+        };
 
-        // Opciónal: imprimir el registro generado para verificar
-        console.log("Registro bancario generado:", this.registroBanco);
+        // Agregar el registro del cliente al registro bancario
+        this.registroBanco.push(registroCliente);
+        console.log("Registro bancario generado:", registroCliente);
+    }
+
+    // Método para buscar un cliente por DNI
+    buscarCliente(dni) {
+        return this.registroBanco.find((cliente) => cliente.dni === dni);
     }
 
     // Método para crear una cuenta
     crearCuenta(cliente) {
-        // Lógica para crear una cuenta
+        // Aquí podrías agregar la lógica necesaria para crear la cuenta
         console.log(`Cuenta creada para ${cliente.nombre}.`);
-        // Agregar lógica adicional según sea necesario, como guardar la cuenta en una base de datos
     }
 
     // Método para cerrar una cuenta
     cerrarCuenta(cliente) {
-        // Lógica para cerrar una cuenta
+        // Aquí podrías agregar la lógica necesaria para cerrar la cuenta
         console.log(`Cuenta cerrada para ${cliente.nombre}.`);
-        // Agregar lógica adicional según sea necesario
     }
 
     // Método para extraer efectivo
-    extraerEfectivo(cliente) {
-        // Lógica para extraer efectivo
-        console.log(`Se han extraído ${cliente.value} para ${cliente.nombre}.`);
-        // Verificar saldo y realizar la operación de extracción
+    extraerEfectivo(dni, monto) {
+        const cliente = this.buscarCliente(dni);
+        if (cliente) {
+            if (monto <= cliente.value) {
+                cliente.value -= monto;
+                console.log(
+                    `Se han extraído $${monto} para ${cliente.nombre}.`
+                );
+            } else {
+                console.log(
+                    "Fondos insuficientes para realizar esta operación."
+                );
+            }
+        } else {
+            console.log("Cliente no encontrado.");
+        }
     }
 
     // Método para ingresar efectivo
-    ingresarEfectivo(cliente) {
-        // Lógica para ingresar efectivo
-        console.log(
-            `Se han ingresado ${cliente.value} para ${cliente.nombre}.`
-        );
-        // Agregar lógica adicional según sea necesario
+    ingresarEfectivo(dni, monto) {
+        const cliente = this.buscarCliente(dni);
+        if (cliente) {
+            cliente.value += monto;
+            console.log(`Se han ingresado $${monto} para ${cliente.nombre}.`);
+        } else {
+            console.log("Cliente no encontrado.");
+        }
     }
 
     // Método para transferir dinero
-    transferirDinero(cliente) {
-        // Lógica para transferir dinero
-        console.log(
-            `Se han transferido ${cliente.value} para ${cliente.nombre}.`
-        );
-        // Agregar lógica adicional para manejar la transferencia
+    transferirDinero(dni, monto) {
+        const cliente = this.buscarCliente(dni);
+        if (cliente) {
+            // Lógica para transferir dinero (podrías agregar lógica adicional)
+            console.log(`Se han transferido $${monto} para ${cliente.nombre}.`);
+        } else {
+            console.log("Cliente no encontrado.");
+        }
     }
 
     // Método para activar una tarjeta
-    activarTarjeta(cliente) {
-        // Lógica para activar una tarjeta
-        console.log(`Tarjeta activada para ${cliente.nombre}.`);
-        // Agregar lógica adicional según sea necesario
+    activarTarjeta(dni) {
+        const cliente = this.buscarCliente(dni);
+        if (cliente) {
+            cliente.tarjetaActivada = true;
+            console.log(`Tarjeta activada para ${cliente.nombre}.`);
+        } else {
+            console.log("Cliente no encontrado.");
+        }
     }
 
     // Método para desactivar una tarjeta
-    desactivarTarjeta(cliente) {
-        // Lógica para desactivar una tarjeta
-        console.log(`Tarjeta desactivada para ${cliente.nombre}.`);
-        // Agregar lógica adicional según sea necesario
+    desactivarTarjeta(dni) {
+        const cliente = this.buscarCliente(dni);
+        if (cliente) {
+            cliente.tarjetaActivada = false;
+            console.log(`Tarjeta desactivada para ${cliente.nombre}.`);
+        } else {
+            console.log("Cliente no encontrado.");
+        }
     }
 
+    // Método para rechazar una petición
     rechazarPeticion(cliente, razon) {
         const opcionesRechazo = [
             "Datos incorrectos",
@@ -79,7 +109,6 @@ class Banco {
             "No se puede procesar en este momento",
         ];
 
-        // Generar un mensaje de rechazo
         const mensajeRechazo = {
             cliente: cliente.nombre,
             dni: cliente.dni,

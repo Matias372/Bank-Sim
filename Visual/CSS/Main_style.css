@@ -1,0 +1,127 @@
+body {
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.Menu {
+  background-color: #e0e0e0;
+  border: 2px solid #808080;
+  padding: 20px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+.Menu .header__title {
+  font-size: 24px;
+  color: #000080;
+  text-shadow: 1px 1px 2px #ffffff;
+  margin-bottom: 20px;
+}
+.Menu .header__nav {
+  display: flex;
+  gap: 10px;
+}
+.Menu .header__nav button {
+  background-color: #d4d0c8;
+  border: 1px solid #808080;
+  padding: 10px 20px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.15);
+  font-family: "Tahoma", Geneva, sans-serif;
+  cursor: pointer;
+}
+.Menu .header__nav button:hover {
+  background-color: #dfdcd6;
+}
+.Menu .header__nav button.btn-primary {
+  color: #ffffff;
+  background-color: #008080;
+}
+.Menu .header__nav button.btn-secondary {
+  background-color: #d0d0d0;
+}
+
+.main {
+  background-color: #ffffff;
+  color: #333333;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.main .client-data__title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #1c5d99;
+  margin-bottom: 15px;
+}
+.main .client-data__info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #f4f4f4;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #dcdcdc;
+}
+.main .client-data__info p {
+  font-size: 18px;
+  margin: 0;
+  padding: 8px 0;
+  border-bottom: 1px solid #dcdcdc;
+}
+.main .client-data__info p:last-child {
+  border-bottom: none;
+}
+
+.bank-interface {
+  background-color: #ffffff;
+  color: #333333;
+  font-family: "Arial", sans-serif;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #cccccc;
+}
+.bank-interface .bank-interface__title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1c5d99;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #1c5d99;
+}
+.bank-interface .bank-interface__options p {
+  font-size: 18px;
+  margin: 10px 0;
+}
+.bank-interface .bank-interface__input {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.bank-interface .bank-interface__input input {
+  background-color: #f0f0f0;
+  border: 1px solid #cccccc;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 4px;
+}
+.bank-interface .bank-interface__input button {
+  background-color: #1c5d99;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.bank-interface .bank-interface__input button:hover {
+  background-color: #4a90e2;
+}
+.bank-interface .bank-interface__input button.btn-secondary {
+  background-color: #6c757d;
+  color: #ffffff;
+}
+
+/*# sourceMappingURL=Main_style.css.map */

@@ -118,3 +118,40 @@ Una vez que las funcionalidades básicas estén implementadas, es importante rea
 pruebas para asegurarse de que el juego no sea ni demasiado fácil ni frustrantemente 
 difícil. El balance es clave para mantener el interés del usuario a lo largo del 
 tiempo.
+
+
+
+/*
+Simulador de Banco
+├── Menú Principal
+│   ├── Base de Datos
+│   │   ├── Buscar Cliente
+│   │   ├── Agregar Cliente
+│   │   └── Eliminar Cliente
+│   ├── Operaciones
+│   │   ├── Extraer Efectivo
+│   │   │   ├── Ingresar DNI
+│   │   │   ├── Ingresar Monto
+│   │   │   └── Botón "Extraer"
+│   │   ├── Ingresar Efectivo
+│   │   │   ├── Ingresar DNI
+│   │   │   ├── Ingresar Monto
+│   │   │   └── Botón "Ingresar"
+│   │   ├── Transferir Dinero
+│   │   │   ├── Ingresar DNI de origen
+│   │   │   ├── Ingresar DNI de destino
+│   │   │   ├── Ingresar Monto
+│   │   │   └── Botón "Transferir"
+│   │   ├── Activar Tarjeta
+│   │   │   ├── Ingresar DNI
+│   │   │   └── Botón "Activar"
+│   │   └── Desactivar Tarjeta
+│   │       ├── Ingresar DNI
+│   │       └── Botón "Desactivar"
+│   ├── Rechazar Petición
+│   │   ├── Seleccionar Motivo (con <select>)
+│   │   ├── Botón "Rechazar"
+
+    
+    la Base de datos seria la clase Banco que tiene generarRegistroBanco donde 
+    genera la lista de los clientes del dia.*/
