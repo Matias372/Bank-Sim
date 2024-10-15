@@ -10,7 +10,7 @@ import {
 } from "./interfaz.js"; // Ajusta la ruta según tu estructura de carpetas
 import { Cliente } from "./client.js"; // Asegúrate de que la ruta sea correcta
 import { Banco } from "./bank.js"; // Asegúrate de que la ruta sea correcta
-import { validarOperacion } from "./InputHandler.js"; // Importar la función de validación
+// Importar la función de validación
 
 //================================================
 // 2) VARIABLES GLOBALES
@@ -34,41 +34,19 @@ document.getElementById("nuevo").addEventListener("click", () => {
         bank.generarRegistroBanco(cliente); // Genera el registro bancario para un solo cliente
     }
     actualizarCliente(cliente);
-});
-
-document.getElementById("cargar").addEventListener("click", () => {
-    hideSim(); // Oculta la simulación
+    console.log(cliente);
+    console.log(bank.registroBanco);
 });
 
 // Agregar listener para el cambio en el tipo de operación
-document.getElementById("type").addEventListener("change", showOptions);
+document
+    .getElementById("type")
+    .addEventListener("change", () => showOptions(bank, cliente)); // Cambiado a función de flecha
 
+// Agregar listener para el cambio de opción seleccionada
 document
     .getElementById("option")
-    .addEventListener("change", handleOptionChange);
-
-// Agregar listener para el botón de enviar operación
-document.getElementById("enviarOperacion").addEventListener("click", () => {
-    const tipoOperacion = document.getElementById("option").value; // Obtener el tipo de operación
-    const dni = document.getElementById("dni").value; // Obtener el DNI del cliente
-    const dniDestino = document.getElementById("dniDestino")?.value; // Obtener el DNI destino, si aplica
-
-    const resultadoValidacion = validarOperacion(
-        cliente,
-        tipoOperacion,
-        dni,
-        dniDestino
-    );
-
-    if (resultadoValidacion.valido) {
-        // Si la validación es exitosa, proceder con la operación
-        console.log("Operación válida:", tipoOperacion);
-        // Aquí puedes agregar la lógica para realizar la operación
-    } else {
-        // Mostrar mensaje de error
-        alert(resultadoValidacion.mensaje);
-    }
-});
+    .addEventListener("change", () => handleOptionChange(bank, cliente)); // Cambiado a función de flecha
 
 // Inicializar ocultando la interfaz al cargar
 document.addEventListener("DOMContentLoaded", hideSim);

@@ -1,338 +1,443 @@
-// InputHandler.js
+let clienteEncontrado;
+const inputDiv = document.querySelector(".bank-interface__input");
+import { actualizarCliente } from "./interfaz.js";
 
-// Función para validar la operación con respecto al cliente y el banco
-function validarOperacion(cliente, tipoOperacion, dni, dni_destino) {
-    // Verificar si el DNI ingresado coincide con el del cliente actual
-    if (cliente.dni !== dni) {
-        console.log("DNI incorrecto para el cliente actual.");
-        return { valido: false, mensaje: "DNI no coincide con el cliente." };
-    }
+export function validarOperacion(bank, cliente) {
+    const tipoOperacion = document.getElementById("option").value;
 
-    // Validar según el tipo de operación seleccionado
     switch (tipoOperacion) {
+        case "Buscar cliente":
+            const dniBuscar = document.getElementById("dniBuscar").value; // Obtener el DNI ingresado
+            clienteEncontrado = bank.registroBanco.find(
+                (c) => c.dni === dniBuscar // Usar 'c' para representar cada cliente en el registro
+            ); // Buscar cliente en el registro
+
+            const resultadoDiv = document.createElement("p"); // Crear un elemento <p> para mostrar el resultado
+            // Obtener el div donde se mostrará el resultado
+
+            if (clienteEncontrado) {
+                // Si se encuentra al cliente
+                const registroCliente = {
+                    nombre: clienteEncontrado.nombre,
+                    genero: clienteEncontrado.genero,
+                    edad: clienteEncontrado.edad,
+                    dni: clienteEncontrado.dni,
+                    value: clienteEncontrado.value || 0, // Asegura que el cliente tenga un saldo inicial
+                    tarjetaActivada: false, // Inicializa el estado de la tarjeta
+                };
+
+                resultadoDiv.innerHTML = `Cliente encontrado: <br>
+                    Nombre: ${registroCliente.nombre} <br>
+                    Género: ${registroCliente.genero} <br>
+                    Edad: ${registroCliente.edad} <br>
+                    DNI: ${registroCliente.dni} <br>
+                    Saldo: ${registroCliente.value} <br>
+                    Tarjeta Activada: ${
+                        registroCliente.tarjetaActivada ? "Sí" : "No"
+                    }`;
+            } else {
+                // Si no se encuentra al cliente
+                resultadoDiv.innerHTML =
+                    "No hay registro del cliente con el DNI proporcionado.";
+            }
+
+            // Limpiar contenido previo y agregar el resultado
+            inputDiv.innerHTML = ""; // Limpiar el div donde se ingresan los datos
+            inputDiv.appendChild(resultadoDiv); // Agregar el resultado al div
+            break;
         case "Crear Cuenta":
-            // Verificar que la petición del cliente sea "Crear Cuenta"
-            if (cliente.peticion !== "Crear Cuenta") {
-                return {
-                    valido: false,
-                    mensaje: "La petición del cliente no es 'Crear Cuenta'.",
-                };
-            }
-
-            // Obtener los datos ingresados del formulario
-            const nombre = document.getElementById("nombreCrear").value;
+            const nombreCrear = document.getElementById("nombreCrear").value;
             const dniCrear = document.getElementById("dniCrear").value;
-            const genero = document.getElementById("generoCrear").value;
-            const edad = document.getElementById("edadCrear").value;
+            const generoCrear = document.getElementById("generoCrear").value;
+            const edadCrear = document.getElementById("edadCrear").value;
 
-            // Validar que todos los campos no estén vacíos
-            if (!nombre || !dniCrear || !genero || !edad) {
-                return {
-                    valido: false,
-                    mensaje: "Todos los campos son obligatorios.",
-                };
+            // Validar que el DNI no esté ya registrado
+            const existeCliente = bank.registroBanco.some(
+                (c) => c.dni === dniCrear
+            );
+
+            const crearResultadoDiv = document.createElement("p");
+
+            // Verificar que la petición del cliente sea la correcta
+            if (cliente.peticion !== "Crear Cuenta") {
+                crearResultadoDiv.innerHTML =
+                    "Petición inválida. No se puede crear la cuenta.";
+            } else if (existeCliente) {
+                crearResultadoDiv.innerHTML =
+                    "Ya existe un cliente con este DNI.";
+            } else {
+                // Crear el nuevo cliente
+                const nuevoCliente = new Cliente(
+                    nombreCrear,
+                    dniCrear,
+                    generoCrear,
+                    edadCrear
+                );
+                bank.generarRegistroBanco(nuevoCliente); // Agregar cliente al banco
+                crearResultadoDiv.innerHTML =
+                    "Cuenta creada exitosamente para " + nombreCrear;
+
+                setInterval(() => {
+                    nextClient(bank, cliente);
+                }, 1000);
             }
 
-            // Validar que el DNI sea un número
-            if (isNaN(dniCrear) || dniCrear.length < 7) {
-                return {
-                    valido: false,
-                    mensaje:
-                        "El DNI debe ser un número válido con al menos 7 dígitos.",
-                };
-            }
-
-            // Validar que la edad sea un número y mayor de 18 años
-            if (isNaN(edad) || edad < 18) {
-                return {
-                    valido: false,
-                    mensaje: "La edad debe ser un número y mayor o igual a 18.",
-                };
-            }
-
-            // Si todo está bien, devolver que la validación fue exitosa
-            return {
-                valido: true,
-                mensaje: "Validación de creación de cuenta exitosa.",
-            };
+            inputDiv.innerHTML = "";
+            inputDiv.appendChild(crearResultadoDiv);
             break;
-        case "Cerrar Cuenta":
-            // Verificar que la petición del cliente sea "Cerrar Cuenta"
-            if (cliente.peticion !== "Cerrar Cuenta") {
-                return {
-                    valido: false,
-                    mensaje: "La petición del cliente no es 'Cerrar Cuenta'.",
-                };
+
+        case "Eliminar Cuenta":
+            const dniEliminar = document.getElementById("dniEliminar").value;
+
+            // Buscar el cliente en el registro
+            clienteEncontrado = bank.registroBanco.find(
+                (c) => c.dni === dniEliminar
+            );
+            const eliminarResultadoDiv = document.createElement("p");
+
+            // Validar que se haya encontrado el cliente
+            if (clienteEncontrado) {
+                // Verificar que los datos del cliente coincidan
+                if (
+                    cliente.nombre !== clienteEncontrado.nombre ||
+                    cliente.dni !== clienteEncontrado.dni ||
+                    cliente.edad !== clienteEncontrado.edad
+                ) {
+                    eliminarResultadoDiv.innerHTML =
+                        "Los datos del cliente son inválidos.";
+                } else {
+                    // Si los datos son válidos, proceder a eliminar
+                    const index = bank.registroBanco.findIndex(
+                        (c) => c.dni === dniEliminar
+                    );
+
+                    if (index !== -1) {
+                        bank.registroBanco.splice(index, 1); // Eliminar cliente
+                        eliminarResultadoDiv.innerHTML =
+                            "Cuenta eliminada exitosamente.";
+                        setInterval(() => {
+                            nextClient(bank, cliente);
+                        }, 1000);
+                    } else {
+                        eliminarResultadoDiv.innerHTML =
+                            "No se encontró un cliente con este DNI.";
+                    }
+                }
+            } else {
+                eliminarResultadoDiv.innerHTML =
+                    "No se encontró un cliente con este DNI.";
             }
 
-            // Obtener los datos del formulario relacionados con el cierre de cuenta
-            const dniCerrar = document.getElementById("dniCerrar").value;
-            const confirmar =
-                document.getElementById("confirmarCerrar").checked; // Suponiendo que hay una casilla de verificación para confirmar el cierre
-
-            // Validar que el DNI esté ingresado y sea válido
-            if (!dniCerrar || isNaN(dniCerrar) || dniCerrar.length < 7) {
-                return {
-                    valido: false,
-                    mensaje:
-                        "El DNI debe ser un número válido con al menos 7 dígitos.",
-                };
-            }
-
-            // Validar que el cliente haya confirmado el cierre de cuenta
-            if (!confirmar) {
-                return {
-                    valido: false,
-                    mensaje: "Debes confirmar el cierre de la cuenta.",
-                };
-            }
-
-            // Validar que el saldo del cliente esté en cero antes de cerrar la cuenta
-            if (cliente.value > 0) {
-                return {
-                    valido: false,
-                    mensaje:
-                        "No se puede cerrar la cuenta con saldo pendiente.",
-                };
-            }
-
-            // Validar si la cuenta está activa
-            if (!cliente.cuentaActiva) {
-                return {
-                    valido: false,
-                    mensaje: "La cuenta ya está inactiva.",
-                };
-            }
-
-            // Si todo está bien, devolver que la validación fue exitosa
-            return {
-                valido: true,
-                mensaje: "Validación de cierre de cuenta exitosa.",
-            };
-
+            inputDiv.innerHTML = "";
+            inputDiv.appendChild(eliminarResultadoDiv);
             break;
+
         case "Extraer Efectivo":
-            // Verificar que la petición del cliente sea "Extraer Efectivo"
-            if (cliente.peticion !== "Extraer Efectivo") {
-                return {
-                    valido: false,
-                    mensaje:
-                        "La petición del cliente no es 'Extraer Efectivo'.",
-                };
+            const dniExtraer = document.getElementById("dniExtraer").value;
+            const montoExtraer = parseFloat(
+                document.getElementById("montoExtraer").value
+            );
+
+            // Buscar el cliente en el registro
+            const clienteEncontradoExtraer = bank.registroBanco.find(
+                (c) => c.dni === dniExtraer
+            );
+            const extraerResultadoDiv = document.createElement("p");
+
+            // Validar que se haya encontrado el cliente
+            if (clienteEncontradoExtraer) {
+                // Verificar que los datos del cliente coincidan
+                if (
+                    cliente.nombre !== clienteEncontradoExtraer.nombre ||
+                    cliente.dni !== clienteEncontradoExtraer.dni ||
+                    cliente.edad !== clienteEncontradoExtraer.edad
+                ) {
+                    extraerResultadoDiv.innerHTML =
+                        "Los datos del cliente son inválidos.";
+                } else {
+                    // Verificar que el monto a extraer sea válido
+                    if (montoExtraer <= 0) {
+                        extraerResultadoDiv.innerHTML =
+                            "El monto a extraer debe ser mayor a cero.";
+                    } else if (montoExtraer > clienteEncontradoExtraer.value) {
+                        // Verificar si el saldo es suficiente
+                        extraerResultadoDiv.innerHTML =
+                            "Saldo insuficiente para realizar la extracción.";
+                    } else {
+                        // Si todo es válido, proceder a realizar la extracción
+                        clienteEncontradoExtraer.value -= montoExtraer; // Reducir el saldo del cliente
+                        extraerResultadoDiv.innerHTML = `Se han extraído $${montoExtraer} exitosamente. Saldo restante: $${clienteEncontradoExtraer.value}.`;
+                        setInterval(() => {
+                            nextClient(bank, cliente);
+                        }, 1000);
+                    }
+                }
+            } else {
+                extraerResultadoDiv.innerHTML =
+                    "No se encontró un cliente con este DNI.";
             }
 
-            // Obtener los datos del formulario relacionados con la extracción
-            const montoExtraer = document.getElementById("montoExtraer").value;
-
-            // Validar que el monto no esté vacío y sea un número
-            if (!montoExtraer || isNaN(montoExtraer) || montoExtraer <= 0) {
-                return {
-                    valido: false,
-                    mensaje: "Debes ingresar un monto válido para extraer.",
-                };
-            }
-
-            // Convertir el monto ingresado a número
-            const monto = parseFloat(montoExtraer);
-
-            // Validar que el monto no sea mayor al saldo del cliente
-            if (monto > cliente.value) {
-                return {
-                    valido: false,
-                    mensaje: "El monto supera el saldo disponible del cliente.",
-                };
-            }
-
-            // Validar que el monto no sea mayor al saldo del banco
-            if (monto > bank.value) {
-                return {
-                    valido: false,
-                    mensaje:
-                        "Fondos insuficientes en el banco para realizar esta operación.",
-                };
-            }
-
-            // Si todo está bien, devolver que la validación fue exitosa
-            return {
-                valido: true,
-                mensaje: "Validación de extracción exitosa.",
-            };
+            inputDiv.innerHTML = "";
+            inputDiv.appendChild(extraerResultadoDiv);
             break;
 
         case "Ingresar Efectivo":
-            // Verificar que la petición del cliente sea "Ingresar Efectivo"
-            if (cliente.peticion !== "Ingresar Efectivo") {
-                return {
-                    valido: false,
-                    mensaje:
-                        "La petición del cliente no es 'Ingresar Efectivo'.",
-                };
+            const dniIngresar = document.getElementById("dniIngresar").value;
+            const montoIngresar = parseFloat(
+                document.getElementById("montoIngresar").value
+            );
+
+            // Buscar el cliente en el registro
+            const clienteEncontradoIngresar = bank.registroBanco.find(
+                (c) => c.dni === dniIngresar
+            );
+            const ingresarResultadoDiv = document.createElement("p");
+
+            // Validar que se haya encontrado el cliente
+            if (clienteEncontradoIngresar) {
+                // Verificar que los datos del cliente coincidan
+                if (
+                    cliente.nombre !== clienteEncontradoIngresar.nombre ||
+                    cliente.dni !== clienteEncontradoIngresar.dni ||
+                    cliente.edad !== clienteEncontradoIngresar.edad
+                ) {
+                    ingresarResultadoDiv.innerHTML =
+                        "Los datos del cliente son inválidos.";
+                } else {
+                    // Verificar que el monto a ingresar sea válido
+                    if (montoIngresar <= 0) {
+                        ingresarResultadoDiv.innerHTML =
+                            "El monto a ingresar debe ser mayor a cero.";
+                    } else {
+                        // Si todo es válido, proceder a realizar el ingreso
+                        clienteEncontradoIngresar.value += montoIngresar; // Actualizar saldo
+                        ingresarResultadoDiv.innerHTML = `Ingreso realizado. Nuevo saldo: $${clienteEncontradoIngresar.value}`;
+                        setInterval(() => {
+                            nextClient(bank, cliente);
+                        }, 1000);
+                    }
+                }
+            } else {
+                ingresarResultadoDiv.innerHTML =
+                    "No se encontró un cliente con este DNI.";
             }
 
-            // Obtener el monto de ingreso desde el formulario
-            const montoIngresar =
-                document.getElementById("montoIngresar").value;
-
-            // Validar que el monto no esté vacío y sea un número
-            if (!montoIngresar || isNaN(montoIngresar) || montoIngresar <= 0) {
-                return {
-                    valido: false,
-                    mensaje: "Debes ingresar un monto válido para ingresar.",
-                };
-            }
-
-            // Si todo está bien, devolver que la validación fue exitosa
-            return {
-                valido: true,
-                mensaje: "Validación de ingreso de efectivo exitosa.",
-            };
+            inputDiv.innerHTML = "";
+            inputDiv.appendChild(ingresarResultadoDiv);
             break;
 
         case "Transferir Dinero":
-            // Verificar que la petición del cliente sea "Transferir Dinero"
-            if (cliente.peticion !== "Transferir Dinero") {
-                return {
-                    valido: false,
-                    mensaje:
-                        "La petición del cliente no es 'Transferir Dinero'.",
-                };
+            const dniTransferir =
+                document.getElementById("dniTransferir").value;
+            const dniDestinoTransferir = document.getElementById(
+                "dniDestinoTransferir"
+            ).value;
+            const montoTransferir = parseFloat(
+                document.getElementById("montoTransferir").value
+            );
+
+            // Buscar los clientes en el registro
+            const clienteTransferir = bank.registroBanco.find(
+                (c) => c.dni === dniTransferir
+            );
+            const clienteDestino = bank.registroBanco.find(
+                (c) => c.dni === dniDestinoTransferir
+            );
+            const transferirResultadoDiv = document.createElement("p");
+
+            // Validar que se haya encontrado ambos clientes
+            if (clienteTransferir && clienteDestino) {
+                // Verificar que los datos del cliente remitente coincidan
+                if (
+                    cliente.nombre !== clienteTransferir.nombre ||
+                    cliente.dni !== clienteTransferir.dni ||
+                    cliente.edad !== clienteTransferir.edad
+                ) {
+                    transferirResultadoDiv.innerHTML =
+                        "Los datos del cliente remitente son inválidos.";
+                } else {
+                    // Verificar que el monto a transferir sea válido
+                    if (montoTransferir <= 0) {
+                        transferirResultadoDiv.innerHTML =
+                            "El monto a transferir debe ser mayor a cero.";
+                    } else if (clienteTransferir.value >= montoTransferir) {
+                        // Realizar la transferencia
+                        clienteTransferir.value -= montoTransferir; // Restar del saldo del remitente
+                        clienteDestino.value += montoTransferir; // Sumar al saldo del destinatario
+                        transferirResultadoDiv.innerHTML = `Transferencia realizada. Nuevo saldo del remitente: $${clienteTransferir.value}. Nuevo saldo del destinatario: $${clienteDestino.value}.`;
+                        setInterval(() => {
+                            nextClient(bank, cliente);
+                        }, 1000);
+                    } else {
+                        transferirResultadoDiv.innerHTML =
+                            "Saldo insuficiente para la transferencia.";
+                    }
+                }
+            } else {
+                transferirResultadoDiv.innerHTML =
+                    "No se encontró el cliente remitente o destinatario.";
             }
 
-            // Obtener el monto de transferencia desde el formulario
-            const montoTransferir =
-                document.getElementById("montoTransferir").value;
-
-            // Validar que el monto no esté vacío y sea un número
-            if (
-                !montoTransferir ||
-                isNaN(montoTransferir) ||
-                montoTransferir <= 0
-            ) {
-                return {
-                    valido: false,
-                    mensaje: "Debes ingresar un monto válido para transferir.",
-                };
-            }
-
-            // Verificar que el monto no exceda el saldo disponible del cliente
-            if (montoTransferir > cliente.value) {
-                return {
-                    valido: false,
-                    mensaje:
-                        "Fondos insuficientes para realizar la transferencia.",
-                };
-            }
-
-            // Validar que se haya proporcionado el DNI destino
-            if (!dni_destino) {
-                return { valido: false, mensaje: "DNI destino faltante." };
-            }
-
-            // Si todo está bien, devolver que la validación fue exitosa
-            return {
-                valido: true,
-                mensaje: "Validación de transferencia de dinero exitosa.",
-            };
+            inputDiv.innerHTML = "";
+            inputDiv.appendChild(transferirResultadoDiv);
             break;
 
         case "Activar Tarjeta":
-            // Verificar que la petición del cliente sea "Activar Tarjeta"
-            if (cliente.peticion !== "Activar Tarjeta") {
-                return {
-                    valido: false,
-                    mensaje: "La petición del cliente no es 'Activar Tarjeta'.",
-                };
+            const dniActivar = document.getElementById("dniActivar").value;
+
+            const clienteActivar = bank.registroBanco.find(
+                (c) => c.dni === dniActivar
+            );
+            const activarResultadoDiv = document.createElement("p");
+
+            // Validar que se haya encontrado el cliente
+            if (clienteActivar) {
+                // Verificar que los datos del cliente coincidan
+                if (
+                    cliente.nombre !== clienteActivar.nombre ||
+                    cliente.dni !== clienteActivar.dni ||
+                    cliente.edad !== clienteActivar.edad
+                ) {
+                    activarResultadoDiv.innerHTML =
+                        "Los datos del cliente son inválidos.";
+                } else {
+                    clienteActivar.tarjetaActivada = true; // Activar tarjeta
+                    activarResultadoDiv.innerHTML =
+                        "Tarjeta activada para " + clienteActivar.nombre;
+                    setInterval(() => {
+                        nextClient(bank, cliente);
+                    }, 1000);
+                }
+            } else {
+                activarResultadoDiv.innerHTML =
+                    "No se encontró un cliente con este DNI.";
             }
 
-            // Verificar que la tarjeta no esté ya activada
-            if (cliente.tarjetaActivada) {
-                return {
-                    valido: false,
-                    mensaje: "La tarjeta ya está activada.",
-                };
-            }
-
-            // Si todo está bien, devolver que la validación fue exitosa
-            return {
-                valido: true,
-                mensaje: "Validación para activar tarjeta exitosa.",
-            };
+            inputDiv.innerHTML = "";
+            inputDiv.appendChild(activarResultadoDiv);
             break;
 
         case "Desactivar Tarjeta":
-            // Verificar que la petición del cliente sea "Desactivar Tarjeta"
-            if (cliente.peticion !== "Desactivar Tarjeta") {
-                return {
-                    valido: false,
-                    mensaje:
-                        "La petición del cliente no es 'Desactivar Tarjeta'.",
-                };
+            const dniDesactivar =
+                document.getElementById("dniDesactivar").value;
+
+            const clienteDesactivar = bank.registroBanco.find(
+                (c) => c.dni === dniDesactivar
+            );
+            const desactivarResultadoDiv = document.createElement("p");
+
+            // Validar que se haya encontrado el cliente
+            if (clienteDesactivar) {
+                // Verificar que los datos del cliente coincidan
+                if (
+                    cliente.nombre !== clienteDesactivar.nombre ||
+                    cliente.dni !== clienteDesactivar.dni ||
+                    cliente.edad !== clienteDesactivar.edad
+                ) {
+                    desactivarResultadoDiv.innerHTML =
+                        "Los datos del cliente son inválidos.";
+                } else {
+                    clienteDesactivar.tarjetaActivada = false; // Desactivar tarjeta
+                    desactivarResultadoDiv.innerHTML =
+                        "Tarjeta desactivada para " + clienteDesactivar.nombre;
+                    setInterval(() => {
+                        nextClient(bank, cliente);
+                    }, 1000);
+                }
+            } else {
+                desactivarResultadoDiv.innerHTML =
+                    "No se encontró un cliente con este DNI.";
             }
 
-            // Verificar que la tarjeta esté actualmente activada
-            if (!cliente.tarjetaActivada) {
-                return {
-                    valido: false,
-                    mensaje: "La tarjeta ya está desactivada.",
-                };
-            }
-
-            // Si todo está bien, devolver que la validación fue exitosa
-            return {
-                valido: true,
-                mensaje: "Validación para desactivar tarjeta exitosa.",
-            };
-
+            inputDiv.innerHTML = "";
+            inputDiv.appendChild(desactivarResultadoDiv);
             break;
 
-        case "Rechazar Petición":
-            // Obtener el motivo del input
-            const motivoRechazo =
-                document.getElementById("motivoRechazo").value;
+        case "Datos invalidos":
+            const dniInvalidos = document.getElementById(
+                "dniMontoInsuficiente"
+            ).value; // Suponiendo que estás utilizando este campo para verificar
+            const clienteInvalidos = bank.registroBanco.find(
+                (c) => c.dni === dniInvalidos
+            );
+            const datosInvalidosResultadoDiv = document.createElement("p");
 
-            // Validar según el motivo de rechazo
-            switch (motivoRechazo) {
-                case "Datos invalidos":
-                    // Verificar que cliente.sus sea igual a true
-                    if (!cliente.sus) {
-                        return {
-                            valido: false,
-                            mensaje:
-                                "El cliente no es sospechoso (cliente.sus = false).",
-                        };
-                    }
-                    break;
+            if (clienteInvalidos) {
+                // Aquí podrías comparar otros datos del cliente como nombre, edad, etc.
+                const nombreInvalidos =
+                    document.getElementById("nombreInvalidos").value; // Asegúrate de tener este input en tu HTML
+                const edadInvalidos = parseInt(
+                    document.getElementById("edadInvalidos").value
+                ); // Asegúrate de tener este input en tu HTML
 
-                case "Monto insuficiente":
-                    // Verificar que cliente.value sea mayor que bank.value
-                    if (cliente.value > bank.value) {
-                        return {
-                            valido: false,
-                            mensaje:
-                                "El monto del cliente no excede el del banco.",
-                        };
-                    }
-                    break;
-
-                default:
-                    return {
-                        valido: false,
-                        mensaje: "Motivo de rechazo no válido.",
-                    };
+                // Verificar si los datos son diferentes
+                if (
+                    clienteInvalidos.nombre !== nombreInvalidos ||
+                    clienteInvalidos.edad !== edadInvalidos
+                ) {
+                    datosInvalidosResultadoDiv.innerHTML =
+                        "Se rechazó correctamente.";
+                    setInterval(() => {
+                        nextClient(bank, cliente);
+                    }, 1000);
+                } else {
+                    datosInvalidosResultadoDiv.innerHTML =
+                        "Se rechazó incorrectamente.";
+                }
+            } else {
+                datosInvalidosResultadoDiv.innerHTML =
+                    "No se encontró un cliente con este DNI.";
             }
 
-            // Si todo está bien, devolver que la validación fue exitosa
-            return {
-                valido: true,
-                mensaje: "Validación de rechazo de petición exitosa.",
-            };
+            inputDiv.innerHTML = "";
+            inputDiv.appendChild(datosInvalidosResultadoDiv);
+            break;
 
+        case "Monto insuficiente":
+            const dniMontoInsuficiente = document.getElementById(
+                "dniMontoInsuficiente"
+            ).value; // Obtener el DNI
+            const clienteMontoInsuficiente = bank.registroBanco.find(
+                (c) => c.dni === dniMontoInsuficiente
+            );
+            const montoInsuficienteResultadoDiv = document.createElement("p");
+
+            if (clienteMontoInsuficiente) {
+                // Comparar el saldo del cliente con el valor en el registro del banco
+                if (clienteMontoInsuficiente.value < 0) {
+                    // Si el saldo del cliente es negativo, consideramos que es un rechazo correcto
+                    montoInsuficienteResultadoDiv.innerHTML =
+                        "Se rechazó correctamente.";
+                    nextClient(bank, cliente);
+                } else {
+                    // Si el saldo del cliente es cero o positivo, consideramos que es un rechazo incorrecto
+                    montoInsuficienteResultadoDiv.innerHTML =
+                        "Se rechazó incorrectamente.";
+                }
+            } else {
+                montoInsuficienteResultadoDiv.innerHTML =
+                    "No se encontró un cliente con este DNI.";
+            }
+
+            inputDiv.innerHTML = "";
+            inputDiv.appendChild(montoInsuficienteResultadoDiv);
             break;
 
         default:
-            return { valido: false, mensaje: "Operación no válida." };
+            console.log("Los datos de la validación no son correctos."); // Mensaje en la consola
+            const defaultResultadoDiv = document.createElement("p");
+            defaultResultadoDiv.innerHTML =
+                "Los datos de la validación no son correctos.";
+            inputDiv.innerHTML = ""; // Limpiar el div
+            inputDiv.appendChild(defaultResultadoDiv); // Mostrar mensaje en la interfaz
+            break;
     }
+}
 
-    // Si la validación es exitosa
-    return { valido: true, mensaje: "Validación exitosa." };
+export function nextClient(bank, cliente) {
+    cliente = Cliente.generarCliente();
+    if (cliente && cliente.reqbank === true) {
+        bank.generarRegistroBanco(cliente); // Genera el registro bancario para un solo cliente
+    }
+    actualizarCliente(cliente);
 }

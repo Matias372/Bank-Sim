@@ -101,8 +101,8 @@ class Cliente {
             { tipo: "extraer efectivo", reqbank: true },
             { tipo: "ingresar efectivo", reqbank: true },
             { tipo: "transferir dinero", reqbank: true },
-            { tipo: "activar tarjeta", reqbank: false },
-            { tipo: "desactivar tarjeta", reqbank: false },
+            { tipo: "activar tarjeta", reqbank: true },
+            { tipo: "desactivar tarjeta", reqbank: true },
         ];
 
         const peticion =
