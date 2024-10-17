@@ -6,6 +6,16 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  justify-content: center;
+}
+
+section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 20px auto;
+  max-width: 600px;
 }
 
 .Menu {
@@ -14,6 +24,7 @@ body {
   padding: 20px;
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
+  text-align: center;
 }
 .Menu .header__title {
   font-size: 24px;
@@ -23,6 +34,7 @@ body {
 }
 .Menu .header__nav {
   display: flex;
+  justify-content: center;
   gap: 10px;
 }
 .Menu .header__nav button {
@@ -32,6 +44,10 @@ body {
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.15);
   font-family: "Tahoma", Geneva, sans-serif;
   cursor: pointer;
+  border: 2px solid #808080;
+  border-right-color: #ffffff;
+  border-bottom-color: #ffffff;
+  border-radius: 3px;
 }
 .Menu .header__nav button:hover {
   background-color: #dfdcd6;
@@ -39,9 +55,16 @@ body {
 .Menu .header__nav button.btn-primary {
   color: #ffffff;
   background-color: #008080;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 .Menu .header__nav button.btn-secondary {
   background-color: #d0d0d0;
+}
+.Menu .header__nav button:active {
+  border-right-color: #808080;
+  border-bottom-color: #808080;
+  border-left-color: #ffffff;
+  border-top-color: #ffffff;
 }
 
 .main {
@@ -82,6 +105,9 @@ body {
   padding: 20px;
   border-radius: 8px;
   border: 1px solid #cccccc;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
 }
 .bank-interface .bank-interface__title {
   font-size: 20px;
@@ -90,22 +116,29 @@ body {
   margin-bottom: 15px;
   border-bottom: 2px solid #1c5d99;
 }
-.bank-interface .bank-interface__options p {
-  font-size: 18px;
-  margin: 10px 0;
-}
+.bank-interface .bank-interface__Type,
+.bank-interface .bank-interface__options,
 .bank-interface .bank-interface__input {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin-bottom: 10px;
 }
+.bank-interface .bank-interface__Type select,
+.bank-interface .bank-interface__Type input,
+.bank-interface .bank-interface__options select,
+.bank-interface .bank-interface__options input,
+.bank-interface .bank-interface__input select,
 .bank-interface .bank-interface__input input {
   background-color: #f0f0f0;
   border: 1px solid #cccccc;
   padding: 10px;
   font-size: 16px;
   border-radius: 4px;
+  width: 100%;
 }
+.bank-interface .bank-interface__Type button,
+.bank-interface .bank-interface__options button,
 .bank-interface .bank-interface__input button {
   background-color: #1c5d99;
   color: #ffffff;
@@ -114,14 +147,11 @@ body {
   font-size: 16px;
   border-radius: 4px;
   cursor: pointer;
-  margin-top: 10px;
 }
+.bank-interface .bank-interface__Type button:hover,
+.bank-interface .bank-interface__options button:hover,
 .bank-interface .bank-interface__input button:hover {
   background-color: #4a90e2;
-}
-.bank-interface .bank-interface__input button.btn-secondary {
-  background-color: #6c757d;
-  color: #ffffff;
 }
 
 /*# sourceMappingURL=Main_style.css.map */

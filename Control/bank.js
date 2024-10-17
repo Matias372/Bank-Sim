@@ -1,43 +1,43 @@
 // bank.js
+
+//================================================
+// 1) CLASE Banco
+//================================================
 class Banco {
     constructor() {
         this.registroBanco = []; // Array para almacenar el registro bancario
     }
 
-    // Método para crear un registro bancario a partir de un cliente
+    //================================================
+    // 2) MÉTODOS DE LA CLASE Banco
+    //================================================
+
     generarRegistroBanco(cliente) {
         const registroCliente = {
             nombre: cliente.nombre,
             genero: cliente.genero,
             edad: cliente.edad,
             dni: cliente.dni,
-            value: cliente.value || 0, // Asegura que el cliente tenga un saldo inicial
-            tarjetaActivada: false, // Inicializa el estado de la tarjeta
+            value: cliente.value || 0,
+            tarjetaActivada: false,
         };
 
-        // Agregar el registro del cliente al registro bancario
         this.registroBanco.push(registroCliente);
         console.log("Registro bancario generado:", registroCliente);
     }
 
-    // Método para buscar un cliente por DNI
     buscarCliente(dni) {
         return this.registroBanco.find((cliente) => cliente.dni === dni);
     }
 
-    // Método para crear una cuenta
     crearCuenta(cliente) {
-        // Aquí podrías agregar la lógica necesaria para crear la cuenta
         console.log(`Cuenta creada para ${cliente.nombre}.`);
     }
 
-    // Método para cerrar una cuenta
     cerrarCuenta(cliente) {
-        // Aquí podrías agregar la lógica necesaria para cerrar la cuenta
         console.log(`Cuenta cerrada para ${cliente.nombre}.`);
     }
 
-    // Método para extraer efectivo
     extraerEfectivo(dni, monto) {
         const cliente = this.buscarCliente(dni);
         if (cliente) {
@@ -56,7 +56,6 @@ class Banco {
         }
     }
 
-    // Método para ingresar efectivo
     ingresarEfectivo(dni, monto) {
         const cliente = this.buscarCliente(dni);
         if (cliente) {
@@ -67,18 +66,15 @@ class Banco {
         }
     }
 
-    // Método para transferir dinero
     transferirDinero(dni, monto) {
         const cliente = this.buscarCliente(dni);
         if (cliente) {
-            // Lógica para transferir dinero (podrías agregar lógica adicional)
             console.log(`Se han transferido $${monto} para ${cliente.nombre}.`);
         } else {
             console.log("Cliente no encontrado.");
         }
     }
 
-    // Método para activar una tarjeta
     activarTarjeta(dni) {
         const cliente = this.buscarCliente(dni);
         if (cliente) {
@@ -89,7 +85,6 @@ class Banco {
         }
     }
 
-    // Método para desactivar una tarjeta
     desactivarTarjeta(dni) {
         const cliente = this.buscarCliente(dni);
         if (cliente) {
@@ -100,7 +95,6 @@ class Banco {
         }
     }
 
-    // Método para rechazar una petición
     rechazarPeticion(cliente, razon) {
         const opcionesRechazo = [
             "Datos incorrectos",
@@ -124,5 +118,7 @@ class Banco {
     }
 }
 
-// Exportar la clase para usarla en otros archivos
+//================================================
+// 3) EXPORTACIÓN DE LA CLASE
+//================================================
 export { Banco };

@@ -1,6 +1,8 @@
 // Variables para colores y fuentes
 $color-xp-background: #e0e0e0;
 $color-xp-button: #d4d0c8;
+$color-xp-button-border-light: #ffffff;
+$color-xp-button-border-dark: #808080;
 $color-xp-border: #808080;
 $font-xp: "Tahoma", Geneva, sans-serif;
 $color-background: #f4f4f4;
@@ -25,6 +27,17 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    justify-content: center; // Centra el contenido verticalmente
+}
+
+// Centrando todos los section
+section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 20px auto;
+    max-width: 600px; // Define un ancho máximo para que no sea demasiado grande en pantallas grandes
 }
 
 // Estilo del menú similar a Windows XP
@@ -34,6 +47,7 @@ body {
     padding: 20px;
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
+    text-align: center; // Asegura que el contenido esté centrado
 
     .header__title {
         font-size: 24px;
@@ -44,6 +58,7 @@ body {
 
     .header__nav {
         display: flex;
+        justify-content: center;
         gap: 10px;
 
         button {
@@ -54,6 +69,12 @@ body {
             font-family: $font-xp;
             cursor: pointer;
 
+            // Botón con estilo Windows XP
+            border: 2px solid $color-xp-button-border-dark;
+            border-right-color: $color-xp-button-border-light;
+            border-bottom-color: $color-xp-button-border-light;
+            border-radius: 3px;
+
             &:hover {
                 background-color: lighten($color-xp-button, 5%);
             }
@@ -61,10 +82,19 @@ body {
             &.btn-primary {
                 color: $color-text-light;
                 background-color: #008080;
+                text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
             }
 
             &.btn-secondary {
                 background-color: #d0d0d0;
+            }
+
+            &:active {
+                // Añadir efecto de presionado como los botones de XP
+                border-right-color: $color-xp-button-border-dark;
+                border-bottom-color: $color-xp-button-border-dark;
+                border-left-color: $color-xp-button-border-light;
+                border-top-color: $color-xp-button-border-light;
             }
         }
     }
@@ -114,6 +144,9 @@ body {
     padding: 20px;
     border-radius: 8px;
     border: 1px solid $color-interface-border;
+    width: 100%; // Se asegura de que la interfaz tenga ancho completo
+    max-width: 600px; // Limita el ancho máximo
+    margin: 0 auto; // Centra horizontalmente
 
     .bank-interface__title {
         font-size: 20px;
@@ -123,24 +156,22 @@ body {
         border-bottom: 2px solid $color-primary;
     }
 
-    .bank-interface__options {
-        p {
-            font-size: 18px;
-            margin: 10px 0;
-        }
-    }
-
+    .bank-interface__Type,
+    .bank-interface__options,
     .bank-interface__input {
         display: flex;
         flex-direction: column;
         gap: 10px;
+        margin-bottom: 10px;
 
+        select,
         input {
             background-color: $color-input-bg;
             border: 1px solid $color-input-border;
             padding: 10px;
             font-size: 16px;
             border-radius: 4px;
+            width: 100%;
         }
 
         button {
@@ -151,15 +182,9 @@ body {
             font-size: 16px;
             border-radius: 4px;
             cursor: pointer;
-            margin-top: 10px;
 
             &:hover {
                 background-color: $color-secondary;
-            }
-
-            &.btn-secondary {
-                background-color: #6c757d;
-                color: $color-text-light;
             }
         }
     }

@@ -1,7 +1,13 @@
 // client.js
+
+//================================================
+// 1) IMPORTACIONES
+//================================================
 import { gameData } from "./clientData.js"; // Importar los datos del archivo clientData.js
 
-// Clase Cliente
+//================================================
+// 2) CLASE Cliente
+//================================================
 class Cliente {
     constructor(
         nombre,
@@ -21,11 +27,15 @@ class Cliente {
         this.dni = dni;
         this.peticion = peticion;
         this.reqbank = reqbank; // Si la petición requiere acceso al banco
-        this.sus = false; // Inicialmente no es sospechoso
+        this.sus = sus; // Inicialmente no es sospechoso
         this.text = text; // Texto relacionado con la petición
         this.value = value; // Valor para las transacciones de efectivo
         this.dni_dest = dni_dest; // Asignar dni_dest
     }
+
+    //================================================
+    // 3) MÉTODOS DE LA CLASE Cliente
+    //================================================
 
     // Método para hacer que un cliente se vuelva sospechoso
     volverseSospechoso() {
@@ -64,7 +74,9 @@ class Cliente {
         }
     }
 
-    // Función para generar un cliente aleatorio
+    //================================================
+    // 4) MÉTODO ESTÁTICO PARA GENERAR UN CLIENTE
+    //================================================
     static generarCliente() {
         // Seleccionar género y nombre aleatorio
         const generos = ["masculino", "femenino"];
@@ -161,5 +173,7 @@ class Cliente {
     }
 }
 
-// Exportamos la clase para usarla en otros archivos
+//================================================
+// 5) EXPORTACIÓN DE LA CLASE
+//================================================
 export { Cliente };
