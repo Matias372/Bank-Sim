@@ -365,7 +365,9 @@ export function validarOperacion(bank, cliente) {
             const montoInsuficienteResultadoDiv = document.createElement("p");
 
             if (clienteMontoInsuficiente) {
-                if (clienteMontoInsuficiente.value < 0) {
+                // Verificar si el valor del cliente es mayor que el saldo del banco
+                if (cliente.value > bank.registroBanco.value) {
+                    // Asegúrate de que "value" es el atributo correcto
                     montoInsuficienteResultadoDiv.innerHTML =
                         "Se rechazó correctamente.";
                     nextClient(bank, cliente);
