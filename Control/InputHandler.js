@@ -77,7 +77,7 @@ export function validarOperacion(bank, cliente) {
 
                 setTimeout(() => {
                     nextClient(bank, cliente);
-                }, 1000);
+                }, 2000);
             }
 
             inputDiv.innerHTML = "";
@@ -110,7 +110,7 @@ export function validarOperacion(bank, cliente) {
                             "Cuenta eliminada exitosamente.";
                         setTimeout(() => {
                             nextClient(bank, cliente);
-                        }, 1000);
+                        }, 2000);
                     } else {
                         eliminarResultadoDiv.innerHTML =
                             "No se encontró un cliente con este DNI.";
@@ -156,7 +156,7 @@ export function validarOperacion(bank, cliente) {
                         extraerResultadoDiv.innerHTML = `Se han extraído $${montoExtraer} exitosamente. Saldo restante: $${clienteEncontradoExtraer.value}.`;
                         setTimeout(() => {
                             nextClient(bank, cliente);
-                        }, 1000);
+                        }, 2000);
                     }
                 }
             } else {
@@ -196,7 +196,7 @@ export function validarOperacion(bank, cliente) {
                         ingresarResultadoDiv.innerHTML = `Ingreso realizado. Nuevo saldo: $${clienteEncontradoIngresar.value}`;
                         setTimeout(() => {
                             nextClient(bank, cliente);
-                        }, 1000);
+                        }, 2000);
                     }
                 }
             } else {
@@ -244,7 +244,7 @@ export function validarOperacion(bank, cliente) {
                         transferirResultadoDiv.innerHTML = `Transferencia realizada. Nuevo saldo del remitente: $${clienteTransferir.value}. Nuevo saldo del destinatario: $${clienteDestino.value}.`;
                         setTimeout(() => {
                             nextClient(bank, cliente);
-                        }, 1000);
+                        }, 2000);
                     } else {
                         transferirResultadoDiv.innerHTML =
                             "Saldo insuficiente para la transferencia.";
@@ -280,7 +280,7 @@ export function validarOperacion(bank, cliente) {
                         "Tarjeta activada para " + clienteActivar.nombre;
                     setTimeout(() => {
                         nextClient(bank, cliente);
-                    }, 1000);
+                    }, 2000);
                 }
             } else {
                 activarResultadoDiv.innerHTML =
@@ -314,7 +314,7 @@ export function validarOperacion(bank, cliente) {
                         "Tarjeta desactivada para " + clienteDesactivar.nombre;
                     setTimeout(() => {
                         nextClient(bank, cliente);
-                    }, 1000);
+                    }, 2000);
                 }
             } else {
                 desactivarResultadoDiv.innerHTML =
@@ -341,7 +341,7 @@ export function validarOperacion(bank, cliente) {
                         "Se rechazó correctamente.";
                     setTimeout(() => {
                         nextClient(bank, cliente);
-                    }, 1000);
+                    }, 2000);
                 } else {
                     datosInvalidosResultadoDiv.innerHTML =
                         "Se rechazó incorrectamente.";

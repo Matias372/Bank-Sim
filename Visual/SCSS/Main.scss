@@ -1,4 +1,3 @@
-// Variables para colores y fuentes
 $color-xp-background: #e0e0e0;
 $color-xp-button: #d4d0c8;
 $color-xp-button-border-light: #ffffff;
@@ -18,7 +17,6 @@ $font-interface: "Arial", sans-serif;
 $color-input-bg: #f0f0f0;
 $color-input-border: #cccccc;
 
-// Estilos generales del body
 body {
     font-family: $font-main;
     margin: 0;
@@ -27,27 +25,25 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    justify-content: center; // Centra el contenido verticalmente
+    justify-content: center;
 }
 
-// Centrando todos los section
 section {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     margin: 20px auto;
-    max-width: 600px; // Define un ancho máximo para que no sea demasiado grande en pantallas grandes
+    max-width: 600px;
 }
 
-// Estilo del menú similar a Windows XP
 .Menu {
     background-color: $color-xp-background;
     border: 2px solid $color-xp-border;
     padding: 20px;
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
-    text-align: center; // Asegura que el contenido esté centrado
+    text-align: center;
 
     .header__title {
         font-size: 24px;
@@ -69,7 +65,6 @@ section {
             font-family: $font-xp;
             cursor: pointer;
 
-            // Botón con estilo Windows XP
             border: 2px solid $color-xp-button-border-dark;
             border-right-color: $color-xp-button-border-light;
             border-bottom-color: $color-xp-button-border-light;
@@ -90,7 +85,6 @@ section {
             }
 
             &:active {
-                // Añadir efecto de presionado como los botones de XP
                 border-right-color: $color-xp-button-border-dark;
                 border-bottom-color: $color-xp-button-border-dark;
                 border-left-color: $color-xp-button-border-light;
@@ -100,7 +94,6 @@ section {
     }
 }
 
-// Estilo principal con datos del cliente
 .main {
     background-color: $color-interface-bg;
     color: $color-text-dark;
@@ -136,7 +129,6 @@ section {
     }
 }
 
-// Estilo para la interfaz del banco
 .bank-interface {
     background-color: $color-interface-bg;
     color: $color-text-dark;
@@ -144,9 +136,10 @@ section {
     padding: 20px;
     border-radius: 8px;
     border: 1px solid $color-interface-border;
-    width: 100%; // Se asegura de que la interfaz tenga ancho completo
-    max-width: 600px; // Limita el ancho máximo
-    margin: 0 auto; // Centra horizontalmente
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    height: 380px;
 
     .bank-interface__title {
         font-size: 20px;
